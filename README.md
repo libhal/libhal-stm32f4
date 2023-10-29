@@ -1,12 +1,12 @@
-# libhal-__platform__
+# libhal-stm32f4
 
-[![✅ Checks](https://github.com/libhal/libhal-__platform__/actions/workflows/ci.yml/badge.svg)](https://github.com/libhal/libhal-__platform__/actions/workflows/ci.yml)
-[![Coverage](https://libhal.github.io/libhal-__platform__/coverage/coverage.svg)](https://libhal.github.io/libhal-__platform__/coverage/)
-[![GitHub stars](https://img.shields.io/github/stars/libhal/libhal-__platform__.svg)](https://github.com/libhal/libhal-__platform__/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/libhal/libhal-__platform__.svg)](https://github.com/libhal/libhal-__platform__/network)
-[![GitHub issues](https://img.shields.io/github/issues/libhal/libhal-__platform__.svg)](https://github.com/libhal/libhal-__platform__/issues)
+[![✅ Checks](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml/badge.svg)](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml)
+[![Coverage](https://libhal.github.io/libhal-stm32f4/coverage/coverage.svg)](https://libhal.github.io/libhal-stm32f4/coverage/)
+[![GitHub stars](https://img.shields.io/github/stars/libhal/libhal-stm32f4.svg)](https://github.com/libhal/libhal-stm32f4/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/libhal/libhal-stm32f4.svg)](https://github.com/libhal/libhal-stm32f4/network)
+[![GitHub issues](https://img.shields.io/github/issues/libhal/libhal-stm32f4.svg)](https://github.com/libhal/libhal-stm32f4/issues)
 
-Target library for __platform__ series of devices.
+Target library for stm32f4 series of devices.
 
 ## Contributing
 
@@ -100,7 +100,7 @@ there are `stm32f100`, `stm32f101`, `stm32f102`, `stm32f103`, `stm32f105`, and
 
 Keep `default_options` as it is.
 
-## linker_scripts/libhal-__platform__
+## linker_scripts/libhal-stm32f4
 
 This directory contains linker scripts for different configurations of the
 platform. Each linker script specifies how the linker should arrange the
@@ -156,7 +156,7 @@ This directory contains documentation for the platform library. It includes a
 Doxygen configuration file (`doxygen.conf`) and a set of files for customizing
 the Doxygen output.
 
-## include/libhal-__platform__
+## include/libhal-stm32f4
 
 This directory contains the header files for the platform library. It currently
 includes `output_pin.hpp`, which is a placeholder for the main header file of
@@ -178,8 +178,8 @@ Conan recipe is working correctly.
 
 This directory contains tests for the platform library. It includes:
 
-- `__platform__.test.cpp`: A placeholder for tests for the platform library.
+- `stm32f4.test.cpp`: A placeholder for tests for the platform library.
 - `main.test.cpp`: The main entry point for the tests.
 
-Remember to replace all instances of `__platform__` with the actual name of the
+Remember to replace all instances of `stm32f4` with the actual name of the
 platform that your library is being built for.

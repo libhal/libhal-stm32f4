@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <libhal-__platform__/output_pin.hpp>
+#include <libhal-stm32f4/output_pin.hpp>
 
-namespace hal::__platform__ {
+namespace hal::stm32f4 {
 
 hal::result<output_pin> output_pin::create()
 {
@@ -41,4 +41,4 @@ hal::result<hal::output_pin::level_t> output_pin::driver_level()
   // Fill this out
   return hal::output_pin::level_t{ .state = true };
 }
-}  // namespace hal::__platform__
+}  // namespace hal::stm32f4

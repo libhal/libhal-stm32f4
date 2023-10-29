@@ -15,7 +15,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(test_package LANGUAGES CXX)
 
-find_package(libhal-__platform__ REQUIRED CONFIG)
+find_package(libhal-stm32f4 REQUIRED CONFIG)
 
 add_executable(${PROJECT_NAME} main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC .)
@@ -25,4 +25,4 @@ if(${CMAKE_CROSSCOMPILING})
   target_link_options(${PROJECT_NAME} PRIVATE --oslib=semihost)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE libhal::__platform__)
+target_link_libraries(${PROJECT_NAME} PRIVATE libhal::stm32f4)

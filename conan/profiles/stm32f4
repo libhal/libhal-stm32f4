@@ -3,4 +3,4 @@
 
 [buildenv]
 LIBHAL_PLATFORM={{ platform }}
-LIBHAL_PLATFORM_LIBRARY=__platform__
+LIBHAL_PLATFORM_LIBRARY=stm32f4

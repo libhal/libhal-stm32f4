@@ -22,8 +22,8 @@ libhal_build_demos(
     blinker
 
     PACKAGES
-    libhal-__platform__
+    libhal-stm32f4
 
     LINK_LIBRARIES
-    libhal::__platform__
+    libhal::stm32f4
 )

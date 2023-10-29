@@ -16,7 +16,7 @@
 
 #include <libhal/output_pin.hpp>
 
-namespace hal::__platform__ {
+namespace hal::stm32f4 {
 class output_pin : public hal::output_pin
 {
 public:
@@ -29,4 +29,4 @@ private:
   hal::result<set_level_t> driver_level(bool p_high) override;
   hal::result<level_t> driver_level() override;
 };
-}  // namespace hal::__platform__
+}  // namespace hal::stm32f4

@@ -24,15 +24,15 @@ import os
 required_conan_version = ">=2.0.6"
 
 
-class libhal___platform___conan(ConanFile):
-    name = "libhal-__platform__"
+class libhal_stm32f4_conan(ConanFile):
+    name = "libhal-stm32f4"
     version = "0.0.1"
     license = "Apache-2.0"
     url = "https://github.com/conan-io/conan-center-index"
-    homepage = "https://libhal.github.io/libhal-__platform__"
-    description = ("A collection of drivers and libraries for the __platform__ "
+    homepage = "https://libhal.github.io/libhal-stm32f4"
+    description = ("A collection of drivers and libraries for the stm32f4 "
                    "series microcontrollers.")
-    topics = ("microcontroller", "__platform__",)
+    topics = ("microcontroller", "stm32f4",)
     settings = "compiler", "build_type", "os", "arch"
     exports_sources = ("include/*", "linker_scripts/*", "tests/*", "LICENSE",
                        "CMakeLists.txt", "src/*")
@@ -117,11 +117,11 @@ class libhal___platform___conan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.set_property("cmake_target_name", "libhal::__platform__")
-        self.cpp_info.libs = ["libhal-__platform__"]
+        self.cpp_info.set_property("cmake_target_name", "libhal::stm32f4")
+        self.cpp_info.libs = ["libhal-stm32f4"]
 
         if self._bare_metal and self._use_linker_script:
             linker_path = os.path.join(self.package_folder, "linker_scripts")
-            link_script = "-Tlibhal-__platform__/" + \
+            link_script = "-Tlibhal-stm32f4/" + \
                 str(self.options.platform) + ".ld"
             self.cpp_info.exelinkflags = ["-L" + linker_path, link_script]
