@@ -32,27 +32,26 @@ class libhal_stm32f4_conan(ConanFile):
     homepage = "https://libhal.github.io/libhal-stm32f4"
     description = ("A collection of drivers and libraries for the stm32f4 "
                    "series microcontrollers.")
-    topics = ("microcontroller", "stm32f4",)
+    topics = ("arm", "microcontroller", "stm32f4",)
     settings = "compiler", "build_type", "os", "arch"
     exports_sources = ("include/*", "linker_scripts/*", "tests/*", "LICENSE",
                        "CMakeLists.txt", "src/*")
     generators = "CMakeToolchain", "CMakeDeps", "VirtualBuildEnv"
 
     options = {
-        "platform": [
-            "profile1",
-            "profile2",
-            "ANY"
-        ],
+        "platform": ["ANY"],
     }
-
     default_options = {
         "platform": "ANY",
     }
 
+    def package_id(self):
+        if self.info.options.get_safe("platform"):
+            del self.info.options.platform
+
     @property
     def _use_linker_script(self):
-        return (self.options.platform == "profile1" or
+        return (self.options.platform == "stm32f4" or
                 self.options.platform == "profile2")
 
     @property
@@ -85,7 +84,7 @@ class libhal_stm32f4_conan(ConanFile):
         self.requires("libhal/[^2.0.1]")
         self.requires("libhal-util/[^3.0.0]")
         # Replace with appropriate processor library
-        self.requires("libhal-armcortex/[^2.0.3]")
+        self.requires("libhal-armcortex/[^2.2.0]")
 
     def layout(self):
         cmake_layout(self)

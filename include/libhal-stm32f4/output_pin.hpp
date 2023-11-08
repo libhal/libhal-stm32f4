@@ -20,13 +20,28 @@ namespace hal::stm32f4 {
 class output_pin : public hal::output_pin
 {
 public:
-  /// TODO: Update factory function
+  /**
+   * @brief Get the output pin object
+   *
+   * @param p_port - selects pin port to use
+   * @param p_pin - selects which pin within the port to use
+   * @param p_settings - initial pin settings
+   * @return result<output_pin> - reference to the statically allocated output
+   * pin
+   */
+  static result<output_pin> get(std::char p_port,
+                                std::uint8_t p_pin,
+                                output_pin::settings p_settings = {});
+
   static hal::result<output_pin> create();
 
 private:
-  // Add constructor
+  output_pin(std::char p_port, std::uint8_t p_pin);
   hal::status driver_configure(const settings& p_settings) override;
   hal::result<set_level_t> driver_level(bool p_high) override;
   hal::result<level_t> driver_level() override;
+
+  std::char m_port{};
+  std::uint8_t m_pin{};
 };
 }  // namespace hal::stm32f4
