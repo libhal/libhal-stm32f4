@@ -29,19 +29,19 @@ public:
    * @return result<output_pin> - reference to the statically allocated output
    * pin
    */
-  static result<output_pin> get(std::char p_port,
+  static result<output_pin> get(char p_port,
                                 std::uint8_t p_pin,
                                 output_pin::settings p_settings = {});
 
   static hal::result<output_pin> create();
 
 private:
-  output_pin(std::char p_port, std::uint8_t p_pin);
+  output_pin(char p_port, std::uint8_t p_pin);
   hal::status driver_configure(const settings& p_settings) override;
   hal::result<set_level_t> driver_level(bool p_high) override;
   hal::result<level_t> driver_level() override;
 
-  std::char m_port{};
+  char m_port{};
   std::uint8_t m_pin{};
 };
 }  // namespace hal::stm32f4
