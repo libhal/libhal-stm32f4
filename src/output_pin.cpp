@@ -14,18 +14,29 @@
 
 #include <libhal-stm32f4/output_pin.hpp>
 
+#include "gpio_reg.hpp
 namespace hal::stm32f4 {
 
-hal::result<output_pin> output_pin::create()
+static result<output_pin> get(char p_port,
+                                std::uint8_t p_pin,
+                                output_pin::settings p_settings = {})
 {
-  // Fill this out
+  output_pin gpio(p_port, p_pin);
+  HAL_CHECK(gpio.driver_configure(p_settings));
   return output_pin();
 }
 
 hal::status output_pin::driver_configure(
   [[maybe_unused]] const settings& p_settings)
 {
-  // Fill this out
+  bit_modify(gpio_reg[m_port]->direction).set(pin_mask(m_pin));
+
+  pin(m_port, m_pin)
+    .function(pin::pin_function)
+    .dac(false)
+    .analog(false)
+    .open_drain(p_settings.open_drain)
+    .resistor(p_settings.resistor);
   return hal::success();
 }
 
