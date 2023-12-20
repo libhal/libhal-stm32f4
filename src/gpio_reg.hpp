@@ -28,9 +28,9 @@ struct stm32f4_gpio_t
   volatile std::uint32_t pin_mode;
   /// Offset: 0x004 output type(0 = output push-pull, 1 = output open-drain)
   std::array<std::uint32_t, 3> output_type;
-  /// Offset: 0x08 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast speed, 11 = High speed)
+  /// Offset: 0x008 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast speed, 11 = High speed)
   volatile std::uint32_t output_speed;
-  /// Offset: 0x0C port pull-up/pull-down (00 = no pull-up/pull-down, 01 = pull-up, 10 pull-down)
+  /// Offset: 0x00C port pull-up/pull-down (00 = no pull-up/pull-down, 01 = pull-up, 10 pull-down)
   volatile std::uint32_t pull_up_pull_down;
   /// Offset: 0x010 port input data (RO)
   volatile std::uint32_t input_data;
@@ -58,6 +58,8 @@ enum class gpio_reg{
   e = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01000),
   h = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01C00)
 };
+
+
 
 inline constexpr bit_mask pin_mask(std::uint8_t p_pin)
 {
