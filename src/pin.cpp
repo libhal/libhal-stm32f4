@@ -19,88 +19,49 @@
 #include <libhal-util/bit.hpp>
 #include <libhal/units.hpp>
 
-#include "pin_reg.hpp"
+#include "gpio_reg.hpp"
 
 namespace hal::stm32f4 {
-const pin& pin::mode(uint8_t ) const
+
+const pin& pin::function(hal::stm32f4::pin_function p_function) const
 {
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_function>(p_function_code);
+  auto port_reg = get_reg(m_port);
+  auto pin_mode_mask = port_reg->pin_mode.from<2 * m_pin, 2 * m_pin + 1>();
+  uint8_t alt_func = 0;
+  if (p_function == pin_function::input) {
+    pin_mode_mask.modify(0b00);
+  } else if (p_function == pin_function::output) {
+    pin_mode_mask.modify(0b01);
+  } else if (p_function == pin_function::analog) {
+    pin_mode_mask.modify(0b01);
+  } else {
+    pin_mode_mask.modify(0b10);
+    alt_func = p_function - 3;
+    if (m_pin < 8) {
+      port_reg->alt_function_low.from<2 * m_pin, 2 * m_pin + 3>().modify(
+        static_cast<int>(pin_function) - 3);
+    } else if (m_pin > 8) {
+      port_reg->alt_function_high.from<2 * (m_pin - 8), 2 * (m_pin - 8) + 3>().modify(
+        static_cast<int>(pin_function) - 3);
+    }
+  }
   return *this;
 }
 
 const pin& pin::resistor(hal::pin_resistor p_resistor) const
 {
-  uint8_t resistor_code = 0;
-  switch (p_resistor) {
-    case hal::pin_resistor::none:
-      resistor_code = 0b00;
-      break;
-    case hal::pin_resistor::pull_up:
-      resistor_code = 0b01;
-      break;
-    case hal::pin_resistor::pull_down:
-      resistor_code = 0b10;
-      break;
-  }
-  hal::bit_modify(this->)
-    .insert<pin_resistor>(resistor_code);
-  return *this;
-}
-
-const pin& pin::input_invert(bool p_enable) const
-{
+  // modify the pull_up_pull_down reg to the enumclass of p_registor
   hal::bit_modify(pin_map->matrix[m_port][m_pin])
     .insert<pin_input_invert>(p_enable);
   return *this;
 }
 
-const pin& pin::analog(bool p_enable) const
-{
-  bool is_digital = !p_enable;
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_analog_digital_mode>(is_digital);
-  return *this;
-}
-
-const pin& pin::digital_filter(bool p_enable) const
-{
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_digital_filter>(p_enable);
-  return *this;
-}
-
-const pin& pin::highspeed_i2c(bool p_enable) const
-{
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_i2c_highspeed>(p_enable);
-  return *this;
-}
-
-const pin& pin::high_slew_rate(bool p_enable) const
-{
-  hal::bit_modify(pin_map->matrix[m_port][m_pin]).insert<pin_slew>(p_enable);
-  return *this;
-}
-
-const pin& pin::i2c_high_current(bool p_enable) const
-{
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_i2c_high_current>(p_enable);
-  return *this;
-}
-
 const pin& pin::open_drain(bool p_enable) const
 {
+  // modify output_type to p_enable
   hal::bit_modify(pin_map->matrix[m_port][m_pin])
     .insert<pin_open_drain>(p_enable);
   return *this;
 }
 
-const pin& pin::dac(bool p_enable) const
-{
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_dac_enable>(p_enable);
-  return *this;
-}
-}  // namespace hal::lpc40
+}  // namespace hal::stm32f4
