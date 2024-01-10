@@ -18,6 +18,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <libhal-stm32f4/pin.hpp>
 #include <libhal-util/bit.hpp>
 
 namespace hal::stm32f4 {
@@ -50,19 +51,16 @@ struct stm32f4_gpio_t
 
 inline constexpr intptr_t ahb_base = 0x40020000UL;
 
-enum class gpio_reg{
-  a = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00000),
-  b = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00400),
-  c = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00800),
-  d = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00C00),
-  e = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01000),
-  h = reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01C00)
+static inline std::array<stm32f4_gpio_t*, 6> gpio_regs{
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00000),
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00400),
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00800),
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00C00),
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01000),
+  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01C00)
 };
 
-
-
-inline constexpr bit_mask pin_mask(std::uint8_t p_pin)
-{
-  return bit_mask{ .position = p_pin, .width = 1 };
+static inline stm32f4_gpio_t* get_reg(gpio_port p_port){
+  return gpio_regs[static_cast<int>(p_port)];
 }
 }  // namespace hal::stm32f4

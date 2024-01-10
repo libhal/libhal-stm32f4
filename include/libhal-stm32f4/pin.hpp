@@ -27,10 +27,18 @@ namespace hal::stm32f4 {
 class pin
 {
 public:
-
+  enum class gpio_port{
+    gpioa,
+    gpiob,
+    gpioc,
+    gpiod,
+    gpioe,
+    gpioh
+  }
   enum class pin_function{
     input,
     output,
+    analog,
     alternate0,
     alternate1,
     alternate2,
@@ -56,7 +64,7 @@ public:
    * @param p_port - selects pin port to use
    * @param p_pin - selects pin within the port to use
    */
-  constexpr pin(std::char p_port, std::uint8_t p_pin)
+  constexpr pin(gpio_port p_port, std::uint8_t p_pin)
     : m_port(p_port)
     , m_pin(p_pin)
   {
@@ -71,7 +79,7 @@ public:
    * @param func - the pin function (I,O, alternatex)
    * @return pin& - reference to this pin for chaining
    */
-  const pin& function(pin_function func) const;
+  const pin& function(pin_function p_function) const;
 
   /**
    * @brief Set the internal resistor connection for this pin
@@ -90,7 +98,7 @@ public:
   const pin& open_drain(bool p_enable = true) const;
 
 private:
-  std::char m_port{};
+  gpio_port m_port{};
   std::uint8_t m_pin{};
 };
 }  // namespace hal::lpc40
