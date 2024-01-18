@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2023 Khalil Estell
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <libhal-stm32f4/output_pin.hpp>
 #include <libhal-armcortex/dwt_counter.hpp>
+#include <libhal-stm32f4/output_pin.hpp>
 #include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
 
