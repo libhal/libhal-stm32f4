@@ -26,23 +26,24 @@ namespace hal::stm32f4 {
 const pin& pin::function(hal::stm32f4::pin_function p_function) const
 {
   auto port_reg = get_reg(m_port);
-  auto pin_mode_mask = port_reg->pin_mode.from<2 * m_pin, 2 * m_pin + 1>();
+  auto pin_mode_mask =
+    hal::bit_mask::from<2 * m_pin, 2 * m_pin + 1>(port_reg->pin_mode);
   uint8_t alt_func = 0;
   if (p_function == pin_function::input) {
-    pin_mode_mask.modify(0b00);
+    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b00);
   } else if (p_function == pin_function::output) {
-    pin_mode_mask.modify(0b01);
+    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b01);
   } else if (p_function == pin_function::analog) {
-    pin_mode_mask.modify(0b01);
+    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b11);
   } else {
-    pin_mode_mask.modify(0b10);
+    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b10);
     alt_func = p_function - 3;
     if (m_pin < 8) {
-      port_reg->alt_function_low.from<2 * m_pin, 2 * m_pin + 3>().modify(
-        static_cast<int>(pin_function) - 3);
+      hal::bit_mask::from<2 * m_pin, 2 * m_pin + 3>(port_reg->alt_function_low)
+        .insert(static_cast<int>(pin_function) - 3);
     } else if (m_pin > 8) {
-      port_reg->alt_function_high.from<2 * (m_pin - 8), 2 * (m_pin - 8) + 3>().modify(
-        static_cast<int>(pin_function) - 3);
+      hal::bit_mask::from<2 * m_pin, 2 * m_pin + 3>(port_reg->alt_function_high)
+        .insert(static_cast<int>(pin_function) - 3);
     }
   }
   return *this;
@@ -51,15 +52,19 @@ const pin& pin::function(hal::stm32f4::pin_function p_function) const
 const pin& pin::resistor(hal::pin_resistor p_resistor) const
 {
   // modify the pull_up_pull_down reg to the enumclass of p_registor
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
-    .insert<pin_input_invert>(p_enable);
+  auto port_reg = get_reg(m_port->pull_up_pull_down);
+  auto port_mask = hal::bit_mask::from<2 * m_pin, 2 * m_pin + 1>(port_reg);
+  hal::bit_modify(m_port->pull_up_pull_down)
+    .insert<port_mask>(p_resistor);
   return *this;
 }
 
 const pin& pin::open_drain(bool p_enable) const
 {
   // modify output_type to p_enable
-  hal::bit_modify(pin_map->matrix[m_port][m_pin])
+  auto port_reg = get_reg(m_port->output_type);
+  auto port_mask = hal::bit_mask::from<m_pin>(port_reg);
+  hal::bit_modify(port_reg->output_type)
     .insert<pin_open_drain>(p_enable);
   return *this;
 }
