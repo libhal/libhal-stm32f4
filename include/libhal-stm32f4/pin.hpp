@@ -34,7 +34,7 @@ public:
     gpiod,
     gpioe,
     gpioh
-  }
+  };
   enum class pin_function{
     input,
     output,

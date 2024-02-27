@@ -37,10 +37,10 @@ struct stm32f4_gpio_t
   volatile std::uint32_t input_data;
   /// Offset: 0x014 port output data 
   volatile std::uint32_t output_data;
+  /// Offset: 0x018low port set (0 = no action, 1 = reset)
+  volatile std::uint16_t set;
   /// Offset: 0x018high port reset (0 = no action, 1 = reset)
   volatile std::uint16_t reset;
-  /// Offset: 0x018low port set
-  volatile std::uint16_t set;
   /// Offset: 0x01C config lock
   volatile std::uint32_t lock;
   /// Offset: 0x020 alternate function low (bits 0 - 7)
@@ -60,7 +60,7 @@ static inline std::array<stm32f4_gpio_t*, 6> gpio_regs{
   reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01C00)
 };
 
-static inline stm32f4_gpio_t* get_reg(gpio_port p_port){
+static inline stm32f4_gpio_t* get_reg(hal::stm32f4::pin::gpio_port p_port){
   return gpio_regs[static_cast<int>(p_port)];
 }
 }  // namespace hal::stm32f4
