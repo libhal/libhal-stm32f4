@@ -1,4 +1,6 @@
 # libhal-stm32f4
+> [!WARNING]
+> NOT TESTED
 
 [![✅ Checks](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml/badge.svg)](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml)
 [![Coverage](https://libhal.github.io/libhal-stm32f4/coverage/coverage.svg)](https://libhal.github.io/libhal-stm32f4/coverage/)

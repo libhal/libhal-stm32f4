@@ -28,7 +28,7 @@ struct stm32f4_gpio_t
   /// Offset: 0x000 pin mode (00 = Input, 01 = Output, 10 = Alternate Function mode, 11 Analog) (R/W)
   volatile std::uint32_t pin_mode;
   /// Offset: 0x004 output type(0 = output push-pull, 1 = output open-drain)
-  std::array<std::uint32_t, 3> output_type;
+  volatile std::uint32_t output_type;
   /// Offset: 0x008 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast speed, 11 = High speed)
   volatile std::uint32_t output_speed;
   /// Offset: 0x00C port pull-up/pull-down (00 = no pull-up/pull-down, 01 = pull-up, 10 pull-down)

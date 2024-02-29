@@ -23,28 +23,33 @@
 
 namespace hal::stm32f4 {
 
-const pin& pin::function(hal::stm32f4::pin_function p_function) const
+const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const
 {
   auto port_reg = get_reg(m_port);
-  auto pin_mode_mask =
-    hal::bit_mask::from<2 * m_pin, 2 * m_pin + 1>(port_reg->pin_mode);
-  uint8_t alt_func = 0;
-  if (p_function == pin_function::input) {
-    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b00);
-  } else if (p_function == pin_function::output) {
-    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b01);
-  } else if (p_function == pin_function::analog) {
-    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b11);
-  } else {
-    hal::bit_mask::bit_modify(port_reg->pin_mode).insert<pin_mode_mask>(0b10);
-    alt_func = p_function - 3;
-    if (m_pin < 8) {
-      hal::bit_mask::from<2 * m_pin, 2 * m_pin + 3>(port_reg->alt_function_low)
-        .insert(static_cast<int>(pin_function) - 3);
-    } else if (m_pin > 8) {
-      hal::bit_mask::from<2 * m_pin, 2 * m_pin + 3>(port_reg->alt_function_high)
-        .insert(static_cast<int>(pin_function) - 3);
-    }
+  bit_mask pin_mode_mask = { .position = static_cast<uint32_t>(m_pin) * 2U,
+                             .width = 2 };
+
+  switch (p_function) {
+    case pin_function::input:
+      bit_modify(port_reg->pin_mode).insert(pin_mode_mask, 0b00U);
+      break;
+    case pin_function::output:
+      bit_modify(port_reg->pin_mode).insert(pin_mode_mask, 0b01U);
+      break;
+    case pin_function::analog:
+      bit_modify(port_reg->pin_mode).insert(pin_mode_mask, 0b11U);
+      break;
+    default:
+      bit_modify(port_reg->pin_mode).insert(pin_mode_mask, 0b10U);
+      uint8_t alt_func = static_cast<uint8_t>(p_function) - 3U;
+      bit_mask alt_func_mask = { .position = static_cast<uint32_t>(m_pin) * 4U,
+                                 .width = 4 };
+      if (m_pin < 8) {
+        bit_modify(port_reg->alt_function_low).insert(alt_func_mask, alt_func);
+      } else if (m_pin > 8) {
+        bit_modify(port_reg->alt_function_high).insert(alt_func_mask, alt_func);
+      }
+      break;
   }
   return *this;
 }
@@ -52,20 +57,34 @@ const pin& pin::function(hal::stm32f4::pin_function p_function) const
 const pin& pin::resistor(hal::pin_resistor p_resistor) const
 {
   // modify the pull_up_pull_down reg to the enumclass of p_registor
-  auto port_reg = get_reg(m_port->pull_up_pull_down);
-  auto port_mask = hal::bit_mask::from<2 * m_pin, 2 * m_pin + 1>(port_reg);
-  hal::bit_modify(m_port->pull_up_pull_down)
-    .insert<port_mask>(p_resistor);
+  auto port_reg = get_reg(m_port);
+  bit_mask port_mask = { .position = 2 * static_cast<uint32_t>(m_pin),
+                         .width = 2 };
+  switch (p_resistor) {
+    case pin_resistor::none:
+      hal::bit_modify(port_reg->pull_up_pull_down).insert(port_mask, 0b00U);
+      break;
+    case pin_resistor::pull_up:
+      hal::bit_modify(port_reg->pull_up_pull_down).insert(port_mask, 0b01U);
+      break;
+    case pin_resistor::pull_down:
+      hal::bit_modify(port_reg->pull_up_pull_down).insert(port_mask, 0b10U);
+      break;
+    default:
+      hal::bit_modify(port_reg->pull_up_pull_down).insert(port_mask, 0b00U);
+      break;
+  }
   return *this;
 }
 
 const pin& pin::open_drain(bool p_enable) const
 {
   // modify output_type to p_enable
-  auto port_reg = get_reg(m_port->output_type);
-  auto port_mask = hal::bit_mask::from<m_pin>(port_reg);
-  hal::bit_modify(port_reg->output_type)
-    .insert<pin_open_drain>(p_enable);
+  auto port_reg = get_reg(m_port);
+  bit_mask pin_mask = { .position = static_cast<uint32_t>(m_pin), .width = 1 };
+
+  bit_modify(port_reg->output_type)
+    .insert(pin_mask, static_cast<uint32_t>(p_enable));
   return *this;
 }
 
