@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <libhal/output_pin.hpp>
 #include "pin.hpp"
+#include <libhal/output_pin.hpp>
 
 namespace hal::stm32f4 {
 class output_pin : public hal::output_pin
@@ -30,19 +30,17 @@ public:
    * @return result<output_pin> - reference to the statically allocated output
    * pin
    */
-  static result<output_pin> get(hal::stm32f4::pin::gpio_port p_port,
+  static result<output_pin> get(hal::stm32f4::peripheral p_port,
                                 std::uint8_t p_pin,
                                 output_pin::settings p_settings = {});
 
-  static hal::result<output_pin> create();
-
 private:
-  output_pin(hal::stm32f4::pin::gpio_port p_port, std::uint8_t p_pin);
+  output_pin(hal::stm32f4::peripheral p_port, std::uint8_t p_pin);
   hal::status driver_configure(const settings& p_settings) override;
   hal::result<set_level_t> driver_level(bool p_high) override;
   hal::result<level_t> driver_level() override;
 
-  hal::stm32f4::pin::gpio_port m_port{};
+  hal::stm32f4::peripheral m_port{};
   std::uint8_t m_pin{};
 };
 }  // namespace hal::stm32f4

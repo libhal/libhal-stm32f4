@@ -22,10 +22,14 @@ void output_pin_test()
   using namespace boost::ut;
   using namespace std::literals;
 
-  "output_pin::create()"_test = []() {
+  "output_pin::get()"_test = []() {
     // Setup
+    auto led = output_pin::get(peripheral::gpio_a, 5);
     // Exercise
+    led.level(true);
     // Verify
+    if(led.level())
+      return hal::success();
   };
 };
 }  // namespace hal::stm32f4

@@ -13,21 +13,23 @@
 // limitations under the License.
 
 #include "gpio_reg.hpp"
+#include "power.hpp"
 #include <libhal-stm32f4/output_pin.hpp>
 #include <libhal-util/bit.hpp>
 
 namespace hal::stm32f4 {
 
-result<output_pin> output_pin::get(hal::stm32f4::pin::gpio_port p_port,
+result<output_pin> output_pin::get(hal::stm32f4::peripheral p_port,
                                    std::uint8_t p_pin,
                                    output_pin::settings p_settings)
 {
   output_pin gpio(p_port, p_pin);
+  power(p_port).on();
   HAL_CHECK(gpio.driver_configure(p_settings));
   return gpio;
 }
 
-output_pin::output_pin(hal::stm32f4::pin::gpio_port p_port,
+output_pin::output_pin(hal::stm32f4::peripheral p_port,
                        std::uint8_t p_pin)  // NOLINT
   : m_port(p_port)
   , m_pin(p_pin)
@@ -51,11 +53,10 @@ hal::status output_pin::driver_configure(
 hal::result<hal::output_pin::set_level_t> output_pin::driver_level(
   [[maybe_unused]] bool p_high)
 {
-  bit_mask set_bit = { .position = static_cast<uint32_t>(m_pin),
-                             .width = 1};
-  if(p_high){
+  bit_mask set_bit = { .position = static_cast<uint32_t>(m_pin), .width = 1 };
+  if (p_high) {
     bit_modify(get_reg(m_port)->set).set(set_bit);
-  }else{
+  } else {
     bit_modify(get_reg(m_port)->reset).set(set_bit);
   }
   // Fill this out

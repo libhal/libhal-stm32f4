@@ -14,24 +14,78 @@
 
 #pragma once
 
+#include <array>
 #include <cstdint>
 
 namespace hal::stm32f4 {
 struct reset_and_clock_control_t
 {
+  /// Offset: 0x00 Clock Control Register
   volatile std::uint32_t cr;
+  /// Offset: 0x04 PLL config register
   volatile std::uint32_t pllcfgr;
+  /// Offset: 0x08 clock config register
   volatile std::uint32_t cfgr;
+  /// Offset: 0x0c clock interrupt register
   volatile std::uint32_t cir;
-  volatile std::uint32_t apb2rstr;
+  /// Offset: 0x10 ahb1 peripheral reset register
+  volatile std::uint32_t ahb1rstr;
+  /// Offset: 0x14 ahb2 peripheral reset register
+  volatile std::uint32_t ahb2rstr;
+
+  volatile std::array<std::uint32_t, 2> reserved0;
+
+  /// Offset: 0x20 ahb1 peripheral reset register
   volatile std::uint32_t apb1rstr;
-  volatile std::uint32_t ahbenr;
-  volatile std::uint32_t apb2enr;
+  /// Offset: 0x24 ahb2 peripheral reset register
+  volatile std::uint32_t apb2rstr;
+
+  volatile std::array<std::uint32_t, 2> reserved1;
+
+  /// Offset: 0x30 ahb1 clock enable register
+  volatile std::uint32_t ahb1enr;
+  /// Offset: 0x34 ahb1 clock enable register
+  volatile std::uint32_t ahb2enr;
+
+  volatile std::array<std::uint32_t, 2> reserved2;
+
+  /// Offset: 0x40 apb1 clock enable register
   volatile std::uint32_t apb1enr;
+  /// Offset: 0x44 apb1 clock enable register
+  volatile std::uint32_t apb2enr;
+
+  volatile std::array<std::uint32_t, 2> reserved3;
+
+  /// Offset: 0x50 ahb1 peripheral clock enable in low power mode register
+  volatile std::uint32_t ahb1lpenr;
+  /// Offset: 0x54 ahb2 peripheral clock enable in low power mode register
+  volatile std::uint32_t ahb2lpenr;
+
+  volatile std::array<std::uint32_t, 2> reserved4;
+
+  /// Offset: 0x60 apb1 peripheral clock enable in low power mode register
+  volatile std::uint32_t apb1lpenr;
+  /// Offset: 0x64 apb2 peripheral clock enable in low power mode register
+  volatile std::uint32_t apb2lpenr;
+
+  volatile std::array<std::uint32_t, 2> reserved5;
+
+  /// Offset: 0x70 backup domain control register
   volatile std::uint32_t bdcr;
+  /// Offset: 0x74 control and status register
   volatile std::uint32_t csr;
-  volatile std::uint32_t ahbrstr;
-  volatile std::uint32_t cfgr2;
+
+  volatile std::array<std::uint32_t, 2> reserved6;
+
+  /// Offset: 0x80 spread spectrum clock generation register
+  volatile std::uint32_t sscgr;
+  /// Offset: 0x84 plli2s config register
+  volatile std::uint32_t plli2scfgr;
+
+  volatile std::uint32_t reserved7;
+
+  /// Offset 0x8c dedicated clocks configuration register
+  volatile std::uint32_t dckcfgr;
 };
 
 /**
@@ -39,178 +93,5 @@ struct reset_and_clock_control_t
  * register.
  */
 inline reset_and_clock_control_t* rcc =
-  reinterpret_cast<reset_and_clock_control_t*>(0x40000000 + 0x20000 + 0x1000);
-
-/// Bit masks for the CR register
-struct clock_control
-{
-  /// Indicates if the PLL i2s is enabled and ready
-  static constexpr auto plli2s_ready = bit_mask::from<27>();
-
-  /// Used to enable the PLL i2s
-  static constexpr auto plli2s_enable = bit_mask::from<26>();
-  
-  /// Indicates if the PLL is enabled and ready
-  static constexpr auto pll_ready = bit_mask::from<25>();
-  
-  /// Used to enable the PLL
-  static constexpr auto pll_enable = bit_mask::from<24>();
-
-  /// Used to enable the Clock Secuity
-  static constexpr auto css_enable = bit_mask::from<19>();
-
-  /// HSE ocillator bypass 
-  static constexpr auto hse_bypass = bit_mask::from<18>();
-
-  /// HSE clock enable
-  static constexpr auto hse_enable = bit_mask::from<16>();
-
-  /// HSI calibration
-  static constexpr auto hsi_calibration = bit_mask::from<8, 15>();
-
-  /// HSI trim
-  static constexpr auto hsi_trim = bit_mask::from<3, 7>();
-
-  /// HSI ready
-  static constexpr auto hsi_ready = bit_mask::from<1>();
-
-  /// HSI enable
-  static constexpr auto hsi_ready = bit_mask::from<0>();
-
-  static auto reg()
-  {
-    return hal::bit_modify(rcc->cr);
-  }
-};
-
-/// Bit masks for the CFGR register
-struct clock_configuration
-{
-  /// Controls which clock signal is sent to the Microcontroller Clock 2 pin
-  static constexpr auto mco2 = bit_mask::from<30, 31>();
-
-  ///MCO2 prescaler
-  static constexpr auto mco2pre = bit_mask::from<29, 27>();
-
-  ///MCO1 prescaler
-  static constexpr auto mco1pre = bit_mask::from<26, 24>();
-
-  /// Sets the USB clock divider
-  static constexpr auto i2ssrc = bit_mask::from<23>();
-
-  /// Controls which clock signal is sent to the MC1 pin
-  static constexpr auto mco1 = bit_mask::from<21, 22>();
-
-  /// HSE division factor for RTC clock
-  static constexpr auto rtcpre = bit_mask::from<16, 20>();
-
-  /// APB2 high-speed prescaler
-  static constexpr auto ppre2 = bit_mask::from<13, 15>();
-
-  /// APB1 low-speed prescaler
-  static constexpr auto ppre1 = bit_mask::from<10, 12>();
-
-  /// AHB prescalar
-  static constexpr auto hpre = bit_mask::from<4, 7>();
-
-  /// System clock switch status
-  static constexpr auto sws = bit_mask::from<2, 3>();
-
-  /// System clock switch 
-  static constexpr auto sw = bit_mask::from<0, 1>();
-
-  static auto reg()
-  {
-    return hal::bit_modify(rcc->cfgr);
-  }
-};
-
-/// Bit masks for interupt registers
-struct rcc_interupt
-{
-  /// clears the clock security interupt
-  static constexpr auto css_clear = bit_mask::from<23>();
-
-  /// clears the pll i2s ready interupt
-  static constexpr auto plli2srdy_clear = bit_mask::from<21>();
-
-  /// clears the pll ready interupt
-  static constexpr auto pllrdy_clear = bit_mask::from<20>();
-
-  /// clears the hse ready interupt
-  static constexpr auto hserdy_clear = bit_mask::from<19>();
-
-  /// clears the hsi ready interupt
-  static constexpr auto hsirdy_clear = bit_mask::from<18>();
-
-  /// clears the lse ready interupt
-  static constexpr auto lserdy_clear = bit_mask::from<17>();
-
-  /// clears the lsi ready interupt
-  static constexpr auto lsirdy_clear = bit_mask::from<16>();
-
-  /// enables the pll i2s ready interupt
-  static constexpr auto plli2srdy_enable = bit_mask::from<13>();
-
-  /// enables the pll ready interupt
-  static constexpr auto pllrdy_enable = bit_mask::from<12>();
-
-  /// enables the hse ready interupt
-  static constexpr auto hserdy_enable = bit_mask::from<11>();
-
-  /// enables the hsi ready interupt
-  static constexpr auto hsirdy_enable = bit_mask::from<10>();
-
-  /// enables the lse ready interupt
-  static constexpr auto lserdy_enable = bit_mask::from<9>();
-
-  /// enables the lsi ready interupt
-  static constexpr auto lsirdy_enable = bit_mask::from<8>();
-
-  /// clock security interupt flag
-  static constexpr auto css_flag = bit_mask::from<7>();
-
-  /// pll i2s ready interupt flag
-  static constexpr auto plli2srdy_flag = bit_mask::from<5>();
-
-  /// pll ready interupt flag
-  static constexpr auto pllrdy_flag = bit_mask::from<4>();
-
-  /// hse ready interupt flag
-  static constexpr auto hserdy_flag = bit_mask::from<3>();
-
-  /// hsi ready interupt flag
-  static constexpr auto hsirdy_flag = bit_mask::from<2>();
-
-  /// lse ready interupt flag
-  static constexpr auto lserdy_flag = bit_mask::from<1>();
-
-  /// lsi ready interupt flag
-  static constexpr auto lsirdy_flag = bit_mask::from<0>();
-
-  static auto reg()
-  {
-    return hal::bit_modify(rcc->cir);
-  }
-};
-
-/// Bitmasks for the BDCR register
-struct rtc_register
-{
-  /// Will reset all clock states for the RTC
-  static constexpr auto backup_domain_reset = bit_mask::from<16>();
-  /// Enables the RTC clock
-  static constexpr auto rtc_enable = bit_mask::from<15>();
-  /// Selects the clock source for the RTC
-  static constexpr auto rtc_source_select = bit_mask::from<8, 9>();
-  /// Indicates if the LSE is ready for use
-  static constexpr auto low_speed_osc_ready = bit_mask::from<1>();
-  /// Used to enable the LSE
-  static constexpr auto low_speed_osc_enable = bit_mask::from<0>();
-
-  static auto reg()
-  {
-    return hal::bit_modify(rcc->bdcr);
-  }
-};
-}  // namespace hal::stm32f1
+  reinterpret_cast<reset_and_clock_control_t*>(0x40000000 + 0x20000 + 0x3800);
+}  // namespace hal::stm32f4

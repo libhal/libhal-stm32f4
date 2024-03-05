@@ -20,14 +20,20 @@ namespace hal::stm32f4 {
 
 /// Number of bits between each enable register
 static constexpr std::uint32_t bus_id_offset = 32;
-/// Bit position of AHB
+/// Bit position of AHB1
 static constexpr std::uint32_t ahb1_bus = bus_id_offset * 0;
-/// Bit position of AHB
-static constexpr std::uint32_t ahb2_bus = bus_id_offset * 1;
-/// Bit position of APB1
-static constexpr std::uint32_t apb1_bus = bus_id_offset * 4;
 /// Bit position of AHB2
-static constexpr std::uint32_t apb2_bus = bus_id_offset * 5;
+static constexpr std::uint32_t ahb2_bus = bus_id_offset * 1;
+/// Bit position of AHB3
+static constexpr std::uint32_t ahb3_bus = bus_id_offset * 2;
+
+/// Bit position of APB1
+static constexpr std::uint32_t apb1_bus = bus_id_offset * 3;
+/// Bit position of AHB2
+static constexpr std::uint32_t apb2_bus = bus_id_offset * 4;
+
+/// Bit position of outside any bus
+static constexpr std::uint32_t beyond = bus_id_offset * 5;
 
 /// List of each peripheral and their power on id number for this platform
 enum class peripheral : std::uint8_t
@@ -69,6 +75,9 @@ enum class peripheral : std::uint8_t
   timer10 = apb2_bus + 17,
   timer11 = apb2_bus + 18,
   spi5 = apb2_bus + 20,
+
+  cpu = beyond + 0,
+  system_timer = beyond + 1
 };
 
 /// List of interrupt request numbers for this platform
@@ -96,20 +105,20 @@ enum class irq : std::uint16_t
   exti3 = 9,
   /// EXTI Line4
   exti4 = 10,
+  /// DMA1 Channel 0
+  dma1_channel0 = 11,
   /// DMA1 Channel 1
-  dma1_channel1 = 11,
+  dma1_channel1 = 12,
   /// DMA1 Channel 2
-  dma1_channel2 = 12,
+  dma1_channel2 = 13,
   /// DMA1 Channel 3
-  dma1_channel3 = 13,
+  dma1_channel3 = 14,
   /// DMA1 Channel 4
-  dma1_channel4 = 14,
+  dma1_channel4 = 15,
   /// DMA1 Channel 5
-  dma1_channel5 = 15,
+  dma1_channel5 = 16,
   /// DMA1 Channel 6
-  dma1_channel6 = 16,
-  /// DMA1 Channel 7
-  dma1_channel7 = 17,
+  dma1_channel6 = 17,
   /// ADC1
   adc1 = 18,
   /// EXTI Line[9:5]
@@ -156,10 +165,8 @@ enum class irq : std::uint16_t
   exti17 = 41,
   /// RTC Alarm through EXTI Line
   rtcalarm = 41,
-  /// EXTI18 Line18 
-  usbwakeup = 42,
-  /// USB Device WakeUp
-  usbwakeup = 42,
+  /// EXTI18 Line18
+  exti18 = 42,
   /// USB OTG FS WakeUp
   otg_fs_wkup = 42,
   /// DMA1_Channel7
@@ -208,4 +215,4 @@ enum class error_t : std::uint16_t
 {
   max,
 };
-}  // namespace hal::stm32f1
+}  // namespace hal::stm32f4

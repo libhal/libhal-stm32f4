@@ -51,7 +51,7 @@ class libhal_stm32f4_conan(ConanFile):
 
     @property
     def _use_linker_script(self):
-        return (self.options.platform == "stm32f4")
+        return (self.options.platform == "stm32f411re")
 
     @property
     def _min_cppstd(self):

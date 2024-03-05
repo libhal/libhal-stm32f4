@@ -25,17 +25,20 @@ namespace hal::stm32f4 {
 /// gpio peripheral register map
 struct stm32f4_gpio_t
 {
-  /// Offset: 0x000 pin mode (00 = Input, 01 = Output, 10 = Alternate Function mode, 11 Analog) (R/W)
+  /// Offset: 0x000 pin mode (00 = Input, 01 = Output, 10 = Alternate Function
+  /// mode, 11 Analog) (R/W)
   volatile std::uint32_t pin_mode;
   /// Offset: 0x004 output type(0 = output push-pull, 1 = output open-drain)
   volatile std::uint32_t output_type;
-  /// Offset: 0x008 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast speed, 11 = High speed)
+  /// Offset: 0x008 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast
+  /// speed, 11 = High speed)
   volatile std::uint32_t output_speed;
-  /// Offset: 0x00C port pull-up/pull-down (00 = no pull-up/pull-down, 01 = pull-up, 10 pull-down)
+  /// Offset: 0x00C port pull-up/pull-down (00 = no pull-up/pull-down, 01 =
+  /// pull-up, 10 pull-down)
   volatile std::uint32_t pull_up_pull_down;
   /// Offset: 0x010 port input data (RO)
   volatile std::uint32_t input_data;
-  /// Offset: 0x014 port output data 
+  /// Offset: 0x014 port output data
   volatile std::uint32_t output_data;
   /// Offset: 0x018low port set (0 = no action, 1 = reset)
   volatile std::uint16_t set;
@@ -49,18 +52,11 @@ struct stm32f4_gpio_t
   volatile std::uint32_t alt_function_high;
 };
 
-inline constexpr intptr_t ahb_base = 0x40020000UL;
-
-static inline std::array<stm32f4_gpio_t*, 6> gpio_regs{
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00000),
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00400),
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00800),
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x00C00),
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01000),
-  reinterpret_cast<stm32f4_gpio_t*>(ahb_base + 0x01C00)
-};
-
-static inline stm32f4_gpio_t* get_reg(hal::stm32f4::pin::gpio_port p_port){
-  return gpio_regs[static_cast<int>(p_port)];
+inline constexpr intptr_t ahb_base = 0x4002'0000UL;
+static inline stm32f4_gpio_t* get_reg(hal::stm32f4::peripheral p_port)
+{
+  // STM has dedicated memory blocks where every 2^10 is a new
+  return reinterpret_cast<stm32f4_gpio_t*>(ahb_base +
+                                           (static_cast<int>(p_port) << 10));
 }
 }  // namespace hal::stm32f4
