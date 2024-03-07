@@ -12,15 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: ✅ Checks
+name: ✅ CI
 
 on:
   workflow_dispatch:
   pull_request:
-  release:
-    types:
-      - published
-      - deleted
   push:
     branches:
       - main
@@ -28,14 +24,27 @@ on:
     - cron: "0 12 * * 0"
 
 jobs:
-  ci:
-    uses: libhal/ci/.github/workflows/library.yml@4.x.y
+  library_checks:
+    uses: libhal/ci/.github/workflows/library_check.yml@5.x.y
     secrets: inherit
 
-  stm32f411re:
-    uses: libhal/ci/.github/workflows/platform_deploy.yml@4.x.y
+  deploy_cortex-m4f_check:
+    uses: libhal/ci/.github/workflows/deploy.yml@5.x.y
     with:
-      profile: stm32f411re
-      # Replace with appropriate processor profile
-      processor_profile: https://github.com/libhal/libhal-armcortex.git
+      arch: cortex-m4f
+      os: baremetal
+      compiler: gcc
+      compiler_version: 12.3
+      compiler_package: arm-gnu-toolchain
+    secrets: inherit
+
+  demo_check:
+    uses: libhal/ci/.github/workflows/demo_builder.yml@5.x.y
+    with:
+      compiler_profile_url: https://github.com/libhal/arm-gnu-toolchain.git
+      compiler_profile: v1/arm-gcc-12.3
+      compiler_profile_branch: main
+      platform_profile_url: https://github.com/libhal/libhal-stmf4.git
+      platform_profile: stmf411re
+      platform_profile_branch: exceptions
     secrets: inherit
