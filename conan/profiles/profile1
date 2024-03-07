@@ -1,3 +1,0 @@
-{% include "cortex-m4" %}
-{% set platform = "profile1" %}
-{% include "stm32f4" %}

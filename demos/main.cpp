@@ -12,36 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Replace with the correct processor includes
 #include <libhal-armcortex/startup.hpp>
 #include <libhal-armcortex/system_control.hpp>
 #include <libhal/error.hpp>
 
 // Application function must be implemented by one of the compilation units
 // (.cpp) files.
-extern hal::status application();
-
+extern void application();
 int main()
 {
-  // Put platform initialization stuff here...
-  // Initialize data section in RAM here...
-  // Enable necessary coprocessors here...
-
-  auto is_finished = application();
-
-  if (!is_finished) {
-    // Replace line below here with reset() here.
+  try {
+    application();
+  } catch (...) {
     hal::cortex_m::reset();
-  } else {
-    hal::halt();
   }
-
   return 0;
 }
 
-namespace boost {
-void throw_exception(std::exception const&)
+extern "C"
 {
-  hal::halt();
+  struct _reent* _impure_ptr = nullptr;  // NOLINT
+
+  void _exit([[maybe_unused]] int rc)  // NOLINT
+  {
+    std::terminate();
+  }
 }
-}  // namespace boost

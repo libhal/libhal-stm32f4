@@ -18,16 +18,15 @@
 #include <libhal-util/steady_clock.hpp>
 
 void delay_by_cycles(int cycles);
-hal::status application()
+void application()
 {
   using namespace hal::literals;
-  auto led = HAL_CHECK(
-    hal::stm32f4::output_pin::get(hal::stm32f4::peripheral::gpio_a, 5));
-  HAL_CHECK(led.level(true));
+  hal::stm32f4::output_pin led(hal::stm32f4::peripheral::gpio_a, 5);
+  led.level(true);
   while (true) {
-    HAL_CHECK(led.level(false));
+    led.level(false);
     delay_by_cycles(1000000);
-    HAL_CHECK(led.level(true));
+    led.level(true);
     delay_by_cycles(1000000);
   }
 }

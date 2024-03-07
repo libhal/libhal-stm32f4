@@ -23,7 +23,7 @@
 
 namespace hal::stm32f4 {
 
-const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const
+const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const noexcept
 {
   auto port_reg = get_reg(m_port);
   bit_mask pin_mode_mask = { .position = static_cast<uint32_t>(m_pin) * 2U,
@@ -54,7 +54,7 @@ const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const
   return *this;
 }
 
-const pin& pin::resistor(hal::pin_resistor p_resistor) const
+const pin& pin::resistor(hal::pin_resistor p_resistor) const noexcept
 {
   // modify the pull_up_pull_down reg to the enumclass of p_registor
   auto port_reg = get_reg(m_port);
@@ -77,7 +77,7 @@ const pin& pin::resistor(hal::pin_resistor p_resistor) const
   return *this;
 }
 
-const pin& pin::open_drain(bool p_enable) const
+const pin& pin::open_drain(bool p_enable) const noexcept
 {
   // modify output_type to p_enable
   auto port_reg = get_reg(m_port);

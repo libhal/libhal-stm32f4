@@ -13,10 +13,10 @@
 // limitations under the License.
 
 namespace hal::stm32f4 {
-extern void stm32f4_test();
+extern void output_pin_test();
 }  // namespace hal::stm32f4
 
 int main()
 {
-  hal::stm32f4::stm32f4_test();
+  hal::stm32f4::output_pin_test();
 }
