@@ -32,18 +32,10 @@ jobs:
     uses: libhal/ci/.github/workflows/library.yml@4.x.y
     secrets: inherit
 
-  profile1:
+  stm32f411re:
     uses: libhal/ci/.github/workflows/platform_deploy.yml@4.x.y
     with:
-      profile: profile1
-      # Replace with appropriate processor profile
-      processor_profile: https://github.com/libhal/libhal-armcortex.git
-    secrets: inherit
-
-  profile2:
-    uses: libhal/ci/.github/workflows/platform_deploy.yml@4.x.y
-    with:
-      profile: profile2
+      profile: stm32f411re
       # Replace with appropriate processor profile
       processor_profile: https://github.com/libhal/libhal-armcortex.git
     secrets: inherit

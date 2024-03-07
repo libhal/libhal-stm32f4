@@ -70,7 +70,7 @@ public:
   /**
    * @brief Change the function of the pin (mux the pins function)
    *
-   * @param func - the pin function (I,O, alternatex)
+   * @param p_function - the pin function (I,O, alternatex)
    * @return pin& - reference to this pin for chaining
    */
   const pin& function(pin_function p_function) const;
