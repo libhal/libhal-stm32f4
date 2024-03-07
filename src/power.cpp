@@ -22,7 +22,7 @@
 
 namespace hal::stm32f4 {
 namespace {
-volatile uint32_t* enable(int p_bus_index)
+volatile uint32_t* enable(uint32_t p_bus_index)
 {
   switch (p_bus_index) {
     case 0:
@@ -49,7 +49,7 @@ power::power(peripheral p_peripheral)
   auto bus_number = peripheral_value / bus_id_offset;
 
   m_bit_position = static_cast<std::uint8_t>(peripheral_value % bus_id_offset);
-  m_enable_register = enable(bus_number);
+  m_enable_register = enable(static_cast<uint32_t>(bus_number));
 }
 
 void power::on()
