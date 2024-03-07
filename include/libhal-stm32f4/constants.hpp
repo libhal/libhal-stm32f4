@@ -36,7 +36,7 @@ static constexpr std::uint32_t apb2_bus = bus_id_offset * 4;
 static constexpr std::uint32_t beyond = bus_id_offset * 5;
 
 /// List of each peripheral and their power on id number for this platform
-enum class peripheral : std::uint8_t
+enum class peripheral : std::uint32_t
 {
   gpio_a = ahb1_bus + 0,
   gpio_b = ahb1_bus + 1,
