@@ -33,6 +33,8 @@ class demos(ConanFile):
         self.tool_requires("libhal-cmake-util/2.2.0")
 
     def requirements(self):
+        self.requires("libhal/[2.2.0]")
+        self.requires(f"prebuilt-picolibc/{self.settings.compiler.version}")
         self.requires("libhal-stm32f4/0.0.1")
 
     def build(self):

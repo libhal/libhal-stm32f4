@@ -12,26 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "gpio_reg.hpp"
+#include "power.hpp"
 #include <libhal-stm32f4/output_pin.hpp>
+#include <libhal-util/bit.hpp>
 
 namespace hal::stm32f4 {
 
-hal::result<output_pin> output_pin::create()
+result<output_pin> output_pin::get(hal::stm32f4::peripheral p_port,
+                                   std::uint8_t p_pin,
+                                   output_pin::settings p_settings)
 {
-  // Fill this out
-  return output_pin();
+  output_pin gpio(p_port, p_pin);
+  power(p_port).on();
+  HAL_CHECK(gpio.driver_configure(p_settings));
+  return gpio;
+}
+
+output_pin::output_pin(hal::stm32f4::peripheral p_port,
+                       std::uint8_t p_pin)  // NOLINT
+  : m_port(p_port)
+  , m_pin(p_pin)
+{
 }
 
 hal::status output_pin::driver_configure(
   [[maybe_unused]] const settings& p_settings)
 {
-  // Fill this out
+  bit_mask pin_mode_mask = { .position = 2 * static_cast<uint32_t>(m_pin),
+                             .width = 2 };
+  bit_modify(get_reg(m_port)->pin_mode).insert(pin_mode_mask, 0b01U);
+
+  pin(m_port, m_pin)
+    .function(pin::pin_function::output)
+    .open_drain(p_settings.open_drain)
+    .resistor(p_settings.resistor);
   return hal::success();
 }
 
 hal::result<hal::output_pin::set_level_t> output_pin::driver_level(
   [[maybe_unused]] bool p_high)
 {
+  bit_mask set_bit = { .position = static_cast<uint32_t>(m_pin), .width = 1 };
+  if (p_high) {
+    bit_modify(get_reg(m_port)->set).set(set_bit);
+  } else {
+    bit_modify(get_reg(m_port)->reset).set(set_bit);
+  }
   // Fill this out
   return set_level_t{};
 }

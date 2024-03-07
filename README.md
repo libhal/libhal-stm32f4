@@ -1,4 +1,6 @@
 # libhal-stm32f4
+> [!WARNING]
+> TESTED ON STMF411RET6 CPU, CURRENTLY ONLY SUPPORTS STMF411REx FAMILY OF CPUS WITH pyocd AND gdb-multiarch
 
 [![✅ Checks](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml/badge.svg)](https://github.com/libhal/libhal-stm32f4/actions/workflows/ci.yml)
 [![Coverage](https://libhal.github.io/libhal-stm32f4/coverage/coverage.svg)](https://libhal.github.io/libhal-stm32f4/coverage/)

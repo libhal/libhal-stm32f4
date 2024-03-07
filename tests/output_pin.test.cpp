@@ -22,10 +22,10 @@ void output_pin_test()
   using namespace boost::ut;
   using namespace std::literals;
 
-  "output_pin::create()"_test = []() {
+  "output_pin::get()"_test = []() {
     // Setup
     // Exercise
     // Verify
-  };
+  }
 };
 }  // namespace hal::stm32f4
