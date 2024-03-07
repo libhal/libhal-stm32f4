@@ -44,5 +44,5 @@ jobs:
       compiler_profile_url: https://github.com/libhal/arm-gnu-toolchain.git
       compiler_profile: v1/arm-gcc-12.3
       platform_profile_url: https://github.com/FluffyFTW/libhal-stm32f4.git
-      platform_profile: stmf411re
+      platform_profile: stm32f411re
     secrets: inherit
