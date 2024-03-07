@@ -26,6 +26,6 @@ void output_pin_test()
     // Setup
     // Exercise
     // Verify
-  }
+  };
 };
 }  // namespace hal::stm32f4

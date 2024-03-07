@@ -19,25 +19,17 @@
 
 namespace hal::stm32f4 {
 
-result<output_pin> output_pin::get(hal::stm32f4::peripheral p_port,
-                                   std::uint8_t p_pin,
-                                   output_pin::settings p_settings)
-{
-  output_pin gpio(p_port, p_pin);
-  power(p_port).on();
-  HAL_CHECK(gpio.driver_configure(p_settings));
-  return gpio;
-}
-
 output_pin::output_pin(hal::stm32f4::peripheral p_port,
-                       std::uint8_t p_pin)  // NOLINT
+                       std::uint8_t p_pin,
+                       output_pin::settings p_settings)
   : m_port(p_port)
   , m_pin(p_pin)
 {
+  power(p_port).on();
+  driver_configure(p_settings);
 }
 
-hal::status output_pin::driver_configure(
-  [[maybe_unused]] const settings& p_settings)
+void output_pin::driver_configure(const settings& p_settings)
 {
   bit_mask pin_mode_mask = { .position = 2 * static_cast<uint32_t>(m_pin),
                              .width = 2 };
@@ -47,25 +39,22 @@ hal::status output_pin::driver_configure(
     .function(pin::pin_function::output)
     .open_drain(p_settings.open_drain)
     .resistor(p_settings.resistor);
-  return hal::success();
 }
 
-hal::result<hal::output_pin::set_level_t> output_pin::driver_level(
-  [[maybe_unused]] bool p_high)
+void output_pin::driver_level(bool p_high)
 {
   bit_mask set_bit = { .position = static_cast<uint32_t>(m_pin), .width = 1 };
   if (p_high) {
-    bit_modify(get_reg(m_port)->set).set(set_bit);
+    get_reg(m_port)->set = bit_value(0U).set(set_bit).to<std::uint16_t>();
   } else {
-    bit_modify(get_reg(m_port)->reset).set(set_bit);
+    get_reg(m_port)->reset = bit_value(0U).set(set_bit).to<std::uint16_t>();
   }
-  // Fill this out
-  return set_level_t{};
 }
 
-hal::result<hal::output_pin::level_t> output_pin::driver_level()
+bool output_pin::driver_level()
 {
-  // Fill this out
-  return hal::output_pin::level_t{ .state = true };
+  bit_mask output_data_mask = { .position = static_cast<uint32_t>(m_pin),
+                                .width = 1 };
+  return bit_extract(output_data_mask, get_reg(m_port)->output_data);
 }
 }  // namespace hal::stm32f4

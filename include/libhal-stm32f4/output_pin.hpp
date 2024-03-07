@@ -14,31 +14,29 @@
 
 #pragma once
 
-#include "pin.hpp"
 #include <libhal/output_pin.hpp>
+
+#include "pin.hpp"
 
 namespace hal::stm32f4 {
 class output_pin : public hal::output_pin
 {
 public:
   /**
-   * @brief Get the output pin object
+   * @brief Construct a new output pin object
    *
    * @param p_port - selects pin port to use
    * @param p_pin - selects which pin within the port to use
    * @param p_settings - initial pin settings
-   * @return result<output_pin> - reference to the statically allocated output
-   * pin
    */
-  static result<output_pin> get(hal::stm32f4::peripheral p_port,
-                                std::uint8_t p_pin,
-                                output_pin::settings p_settings = {});
+  output_pin(hal::stm32f4::peripheral p_port,
+             std::uint8_t p_pin,
+             output_pin::settings p_settings = {});
 
 private:
-  output_pin(hal::stm32f4::peripheral p_port, std::uint8_t p_pin);
-  hal::status driver_configure(const settings& p_settings) override;
-  hal::result<set_level_t> driver_level(bool p_high) override;
-  hal::result<level_t> driver_level() override;
+  void driver_configure(const settings& p_settings) override;
+  void driver_level(bool p_high) override;
+  bool driver_level() override;
 
   hal::stm32f4::peripheral m_port{};
   std::uint8_t m_pin{};

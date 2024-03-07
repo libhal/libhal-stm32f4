@@ -58,7 +58,7 @@ public:
    * @param p_port - selects pin port to use
    * @param p_pin - selects pin within the port to use
    */
-  constexpr pin(peripheral p_port, std::uint8_t p_pin)
+  constexpr pin(peripheral p_port, std::uint8_t p_pin) noexcept
     : m_port(p_port)
     , m_pin(p_pin)
   {
@@ -73,7 +73,7 @@ public:
    * @param p_function - the pin function (I,O, alternatex)
    * @return pin& - reference to this pin for chaining
    */
-  const pin& function(pin_function p_function) const;
+  const pin& function(pin_function p_function) const noexcept;
 
   /**
    * @brief Set the internal resistor connection for this pin
@@ -81,7 +81,7 @@ public:
    * @param p_resistor - resistor type
    * @return pin& - reference to this pin for chaining
    */
-  const pin& resistor(hal::pin_resistor p_resistor) const;
+  const pin& resistor(hal::pin_resistor p_resistor) const noexcept;
 
   /**
    * @brief Disable or enable hysteresis mode for this pin
@@ -89,7 +89,7 @@ public:
    * @param p_enable - enable this mode, set to false to disable this mode
    * @return pin& - reference to this pin for chaining
    */
-  const pin& open_drain(bool p_enable = true) const;
+  const pin& open_drain(bool p_enable = true) const noexcept;
 
 private:
   peripheral m_port{};

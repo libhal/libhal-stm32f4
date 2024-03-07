@@ -23,7 +23,9 @@ libhal_build_demos(
 
     PACKAGES
     libhal-stm32f4
+    libhal-exceptions
     
     LINK_LIBRARIES
     libhal::stm32f4
+    libhal::exceptions
 )

@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// #include <libhal-stm32f4/output_pin.hpp>
+
 int main()
 {
+  return 0;
   // FILL THIS OUT...
 }
