@@ -17,24 +17,22 @@
 #include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
 
-void delay_by_cycles(int cycles);
+void delay_by_cycles(int p_cycles)
+{
+  volatile int i = 0;
+  while (i < p_cycles) {
+    i = i + 1;
+  }
+}
+
 void application()
 {
-  using namespace hal::literals;
   hal::stm32f4::output_pin led(hal::stm32f4::peripheral::gpio_a, 5);
-  led.level(true);
+
   while (true) {
     led.level(false);
     delay_by_cycles(1000000);
     led.level(true);
     delay_by_cycles(1000000);
-  }
-}
-
-void delay_by_cycles(int cycles)
-{
-  volatile int i = 0;
-  while (i < cycles) {
-    i = i + 1;
   }
 }

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// #include <libhal-stm32f4/output_pin.hpp>
+#include <libhal-exceptions/control.hpp>
 
 int main()
 {
+  hal::set_terminate([]() { printf("TERMINATED!\n"); });
   return 0;
-  // FILL THIS OUT...
 }
