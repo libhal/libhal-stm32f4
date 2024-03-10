@@ -19,14 +19,11 @@ from conan import ConanFile
 
 class demos(ConanFile):
     settings = "compiler", "build_type", "os", "arch", "libc"
-    options = {"platform": ["ANY"]}
-    default_options = {"platform": "unspecified"}
 
-    python_requires = "libhal-bootstrap/[^0.0.4]"
+    python_requires = "libhal-bootstrap/[^1.0.0]"
     python_requires_extend = "libhal-bootstrap.demo"
 
     def requirements(self):
         bootstrap = self.python_requires["libhal-bootstrap"]
         bootstrap.module.add_demo_requirements(self, is_platform=True)
-        self.requires("libhal-exceptions/[^0.0.1]")
         self.requires("libhal-stm32f4/[>=0.0.1]")
