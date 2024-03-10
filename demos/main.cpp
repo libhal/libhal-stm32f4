@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <libhal-armcortex/startup.hpp>
 #include <libhal-armcortex/system_control.hpp>
-#include <libhal/error.hpp>
 
 // Application function must be implemented by one of the compilation units
 // (.cpp) files.
 extern void application();
+
 int main()
 {
   try {
@@ -27,14 +26,4 @@ int main()
     hal::cortex_m::reset();
   }
   return 0;
-}
-
-extern "C"
-{
-  struct _reent* _impure_ptr = nullptr;  // NOLINT
-
-  void _exit([[maybe_unused]] int rc)  // NOLINT
-  {
-    std::terminate();
-  }
 }

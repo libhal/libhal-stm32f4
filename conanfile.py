@@ -27,12 +27,10 @@ class libhal_stm32f4_conan(ConanFile):
     homepage = "https://libhal.github.io/libhal-stm32f4"
     description = ("A collection of drivers and libraries for the stm32f4 "
                    "series microcontrollers.")
-    topics = ("arm", "microcontroller", "stm32f4",)
+    topics = ("arm", "microcontroller", "stm32f4")
     settings = "compiler", "build_type", "os", "arch"
-    exports_sources = ("include/*", "linker_scripts/*", "tests/*", "LICENSE",
-                       "CMakeLists.txt", "src/*")
-    
-    python_requires = "libhal-bootstrap/[^0.0.4]"
+
+    python_requires = "libhal-bootstrap/[^1.0.0]"
     python_requires_extend = "libhal-bootstrap.library"
 
     options = {
@@ -50,18 +48,14 @@ class libhal_stm32f4_conan(ConanFile):
     def _use_linker_script(self):
         return (self.options.platform == "stm32f411re")
 
-    @property
-    def _bare_metal(self):
-        return self.settings.os == "baremetal"
-
     def requirements(self):
-        self.requires("libhal-armcortex/[^3.0.0]")
+        self.requires("libhal-armcortex/[^3.0.2]", transitive_headers=True)
 
     def package_info(self):
         self.cpp_info.libs = ["libhal-stm32f4"]
         self.cpp_info.set_property("cmake_target_name", "libhal::stm32f4")
 
-        if self._bare_metal and self._use_linker_script:
+        if self.settings.os == "baremetal" and self._use_linker_script:
             linker_path = os.path.join(self.package_folder, "linker_scripts")
             link_script = "-Tlibhal-stm32f4/" + \
                 str(self.options.platform) + ".ld"
