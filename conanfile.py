@@ -23,7 +23,6 @@ required_conan_version = ">=2.0.14"
 class libhal_stm32f4_conan(ConanFile):
     name = "libhal-stm32f4"
     license = "Apache-2.0"
-    url = "https://github.com/conan-io/conan-center-index"
     homepage = "https://libhal.github.io/libhal-stm32f4"
     description = ("A collection of drivers and libraries for the stm32f4 "
                    "series microcontrollers.")
