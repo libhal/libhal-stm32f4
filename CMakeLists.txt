@@ -23,6 +23,7 @@ libhal_test_and_make_library(
   src/output_pin.cpp
   src/pin.cpp
   src/power.cpp
+  src/input_pin.cpp
 
   TEST_SOURCES
   tests/output_pin.test.cpp

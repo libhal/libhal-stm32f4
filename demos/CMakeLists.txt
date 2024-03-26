@@ -20,6 +20,7 @@ project(demos LANGUAGES CXX)
 libhal_build_demos(
     DEMOS
     blinker
+    button
 
     PACKAGES
     libhal-stm32f4
