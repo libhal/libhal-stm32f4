@@ -13,9 +13,11 @@
 // limitations under the License.
 
 #include <libhal-armcortex/dwt_counter.hpp>
+
+#include <libhal-stm32f4/input_pin.hpp>
 #include <libhal-stm32f4/output_pin.hpp>
-#include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
+#include <libhal/units.hpp>
 
 // TODO(#15): Replace with `hal::cortex_m::dwt_counter`
 
@@ -29,12 +31,16 @@ void delay_by_cycles(int p_cycles)
 
 void application()
 {
+  hal::stm32f4::input_pin button(hal::stm32f4::peripheral::gpio_c,
+                                 13,
+                                 { .resistor = hal::pin_resistor::pull_up });
   hal::stm32f4::output_pin led(hal::stm32f4::peripheral::gpio_a, 5);
-
+  bool led_val = false;
   while (true) {
-    led.level(false);
-    delay_by_cycles(1000000);
-    led.level(true);
-    delay_by_cycles(1000000);
+    if (!button.level()) {
+      led_val = !led_val;
+    }
+    led.level(led_val);
+    delay_by_cycles(200000);
   }
 }
