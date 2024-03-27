@@ -23,9 +23,9 @@
 #include "gpio_reg.hpp"
 
 namespace hal::stm32f4 {
-input_pin::input_pin(hal::stm32f4::peripheral p_port,  // NOLINT
+input_pin::input_pin(hal::stm32f4::peripheral p_port,
                      std::uint8_t p_pin,
-                     const settings& p_settings)  // NOLINT
+                     const settings& p_settings)
   : m_port(p_port)
   , m_pin(p_pin)
 {

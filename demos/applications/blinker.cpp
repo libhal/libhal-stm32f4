@@ -17,6 +17,8 @@
 #include <libhal-util/serial.hpp>
 #include <libhal-util/steady_clock.hpp>
 
+// TODO(#15): Replace with `hal::cortex_m::dwt_counter`
+
 void delay_by_cycles(int p_cycles)
 {
   volatile int i = 0;
