@@ -21,7 +21,8 @@ libhal_build_demos(
     DEMOS
     blinker
     button
-
+    spi
+    
     PACKAGES
     libhal-stm32f4
 

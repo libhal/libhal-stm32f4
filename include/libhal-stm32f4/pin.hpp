@@ -58,14 +58,7 @@ public:
    * @param p_port - selects pin port to use
    * @param p_pin - selects pin within the port to use
    */
-  constexpr pin(peripheral p_port, std::uint8_t p_pin) noexcept
-    : m_port(p_port)
-    , m_pin(p_pin)
-  {
-  }
-
-  /// Default constructor
-  constexpr pin() = default;
+  pin(peripheral p_port, std::uint8_t p_pin) noexcept;
 
   /**
    * @brief Change the function of the pin (mux the pins function)

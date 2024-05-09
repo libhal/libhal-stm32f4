@@ -1,0 +1,16 @@
+stm32f4_gpio_t* gpioa = 0x4002'0000UL;
+stm32f4_gpio_t* gpiob = 0x4002'0400UL;
+stm32f4_gpio_t* gpioc = 0x4002'0800UL;
+stm32f4_gpio_t* gpiod = 0x4002'0C00UL;
+stm32f4_gpio_t* gpioe = 0x4002'1000UL;
+stm32f4_gpio_t* gpiof = 0x4002'1400UL;
+stm32f4_gpio_t* gpiog = 0x4002'1800UL;
+stm32f4_gpio_t* gpioh = 0x4002'1C00UL;
+
+reset_and_clock_control_t* = 0x4002'3800UL
+
+spi_reg_t* spi_reg1 = (0x4001'0000UL + 0x3000);
+spi_reg_t* spi_reg2 = (0x4000'0000UL + 0x3800);
+spi_reg_t* spi_reg3 = (0x4000'0000UL + 0x3C00);
+spi_reg_t* spi_reg4 = (0x4001'0000UL + 0x3400);
+spi_reg_t* spi_reg5 = (0x4001'0000UL + 0x5000);

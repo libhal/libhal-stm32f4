@@ -20,10 +20,19 @@
 #include <libhal/units.hpp>
 
 #include "gpio_reg.hpp"
+#include "power.hpp"
 
 namespace hal::stm32f4 {
 
-const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const noexcept
+pin::pin(peripheral p_port, std::uint8_t p_pin) noexcept
+  : m_port(p_port)
+  , m_pin(p_pin)
+{
+  power(p_port).on();
+}
+
+const pin& pin::function(
+  hal::stm32f4::pin::pin_function p_function) const noexcept
 {
   auto port_reg = get_reg(m_port);
   bit_mask pin_mode_mask = { .position = static_cast<uint32_t>(m_pin) * 2U,
@@ -42,11 +51,12 @@ const pin& pin::function(hal::stm32f4::pin::pin_function p_function) const noexc
     default:
       bit_modify(port_reg->pin_mode).insert(pin_mode_mask, 0b10U);
       uint8_t alt_func = static_cast<uint8_t>(p_function) - 3U;
-      bit_mask alt_func_mask = { .position = static_cast<uint32_t>(m_pin) * 4U,
+      bit_mask alt_func_mask = { .position =
+                                   (static_cast<uint32_t>(m_pin) * 4U) % 32,
                                  .width = 4 };
       if (m_pin < 8) {
         bit_modify(port_reg->alt_function_low).insert(alt_func_mask, alt_func);
-      } else if (m_pin > 8) {
+      } else {
         bit_modify(port_reg->alt_function_high).insert(alt_func_mask, alt_func);
       }
       break;

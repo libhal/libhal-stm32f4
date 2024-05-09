@@ -17,6 +17,8 @@
 #include <array>
 #include <cstdint>
 
+#include <libhal-util/bit.hpp>
+
 namespace hal::stm32f4 {
 struct reset_and_clock_control_t
 {
@@ -86,6 +88,68 @@ struct reset_and_clock_control_t
 
   /// Offset 0x8c dedicated clocks configuration register
   volatile std::uint32_t dckcfgr;
+};
+
+struct rcc_cnfg
+{
+  /// System clock switch
+  /// 00: HSI oscillator selected as system clock
+  /// 01: HSE oscillator selected as system clock
+  /// 10: PLL selected as system clock
+  /// 11: not allowed
+  static constexpr auto system_clock_switch = bit_mask::from<1, 0>();
+
+  /// System clock switch status
+  /// 00: HSI oscillator used as the system clock
+  /// 01: HSE oscillator used as the system clock
+  /// 10: PLL used as the system clock
+  /// 11: not applicable
+  static constexpr auto system_clock_status_switch = bit_mask::from<3, 2>();
+
+  /// AHB prescaler
+  /// if less than 7, not divided
+  /// else: (system clock frequency)/2**(n-7)
+  static constexpr auto ahb_prescalar = bit_mask::from<7, 4>();
+
+  /// APB1 prescaler (apb clock never exceeds 50MHz)
+  static constexpr auto apb1_prescalar = bit_mask::from<12, 10>();
+
+  /// APB1 prescaler (apb clock never exceeds 100MHz)
+  static constexpr auto apb2_prescalar = bit_mask::from<15, 13>();
+
+  /// HSE division factor for RTC clock
+  /// (1MHz must be inputed in)
+  /// RTC = HSE/n
+  static constexpr auto hse_division_for_rtc_clock = bit_mask::from<20, 16>();
+
+  /// Microcontroller clock output 1 (MCO1)
+  /// 00: HSI clock selected
+  /// 01: LSE oscillator selected
+  /// 10: HSE oscillator clock selected
+  /// 11: PLL clock selected
+  static constexpr auto microcontroller_clock_out_1 = bit_mask::from<22, 21>();
+
+  /// I2S clock selection
+  /// 0: PLLI2S clock used as I2S clock source
+  /// 1: External clock mapped on the I2S_CKIN pin used as I2S clock source
+  static constexpr auto i2s_clock_selection = bit_mask::from<23>();
+
+  /// MCO1 prescaler
+  /// if: n < 4, no division
+  /// else: division by (n & 3) + 2
+  static constexpr auto MCO1_prescaler = bit_mask::from<26, 24>();
+
+  /// MCO2 prescaler
+  /// if: n < 4, no division
+  /// else: division by (n & 3) + 2
+  static constexpr auto MCO2_prescaler = bit_mask::from<29, 27>();
+
+  /// Microcontroller clock output 1 (MCO2)
+  /// 00: System clock (SYSCLK) selected
+  /// 01: PLLI2S clock selected
+  /// 10: HSE oscillator clock selected
+  /// 11: PLL clock selected
+  static constexpr auto microcontroller_clock_out_2 = bit_mask::from<31, 30>();
 };
 
 /**

@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <libhal-armcortex/dwt_counter.hpp>
+#include <array>
+
+#include <cmath>
+#include <libhal-stm32f4/constants.hpp>
 #include <libhal-stm32f4/output_pin.hpp>
-#include <libhal-util/serial.hpp>
+#include <libhal-stm32f4/spi.hpp>
+#include <libhal-util/spi.hpp>
 #include <libhal-util/steady_clock.hpp>
-
-// TODO(#15): Replace with `hal::cortex_m::dwt_counter`
-
 void delay_by_cycles(int p_cycles)
 {
   volatile int i = 0;
@@ -29,12 +30,31 @@ void delay_by_cycles(int p_cycles)
 
 void application()
 {
-  hal::stm32f4::output_pin led(hal::stm32f4::peripheral::gpio_b, 15);
+  using namespace hal::literals;
+
+  hal::stm32f4::spi spi2(2, { .clock_idles_high = true });
+  hal::stm32f4::output_pin chip_select(hal::stm32f4::peripheral::gpio_b, 13);
+  chip_select.level(true);
 
   while (true) {
-    led.level(false);
+    using namespace std::literals;
+    std::array<hal::byte, 4> payload{ 0xDE, 0xAD, 0xBE, 0xEF };
+    std::array<hal::byte, 8> buffer{};
+
+    chip_select.level(false);
+    hal::write(spi2, payload);
+    hal::read(spi2, buffer);
+    chip_select.level(true);
+    delay_by_cycles(100000);
+
+    chip_select.level(false);
+    spi2.transfer(payload, buffer);
+    chip_select.level(true);
     delay_by_cycles(1000000);
-    led.level(true);
+
+    chip_select.level(false);
+    hal::write_then_read(spi2, payload, buffer);
+    chip_select.level(true);
     delay_by_cycles(1000000);
   }
 }
