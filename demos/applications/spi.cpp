@@ -14,7 +14,6 @@
 
 #include <array>
 
-#include <cmath>
 #include <libhal-stm32f4/constants.hpp>
 #include <libhal-stm32f4/output_pin.hpp>
 #include <libhal-stm32f4/spi.hpp>
@@ -32,7 +31,7 @@ void application()
 {
   using namespace hal::literals;
 
-  hal::stm32f4::spi spi2(2, { .clock_idles_high = true });
+  hal::stm32f4::spi spi2(hal::runtime{}, 2, { .clock_idles_high = true });
   hal::stm32f4::output_pin chip_select(hal::stm32f4::peripheral::gpio_b, 13);
   chip_select.level(true);
 

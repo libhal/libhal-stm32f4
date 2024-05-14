@@ -11,20 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#include <cstdint>
 
 #include <bit>
-#include <cstdint>
-#include <libhal-stm32f4/spi.hpp>
 
-#include "gpio_reg.hpp"
-#include "rcc_reg.hpp"
+#include "libhal-stm32f4/pin.hpp"
 #include <libhal-stm32f4/constants.hpp>
+#include <libhal-stm32f4/spi.hpp>
 #include <libhal-util/bit.hpp>
 #include <libhal-util/spi.hpp>
 #include <libhal-util/static_callable.hpp>
 #include <libhal/error.hpp>
 
-#include "libhal-stm32f4/pin.hpp"
 #include "power.hpp"
 #include "spi_reg.hpp"
 
@@ -178,7 +176,7 @@ void spi::driver_configure(const settings& p_settings)
   bit_modify(reg->cr1).set(control_register1::master_selection);
 
   // Setup operating frequency
-  // TODO replace input clock with a get_frequency instruction (#16)
+  // TODO(#16): replace input clock with a get_frequency instruction
   using namespace hal::literals;
   const auto input_clock = 16.0_MHz;
   const auto clock_divider = input_clock / p_settings.clock_rate;
@@ -189,7 +187,7 @@ void spi::driver_configure(const settings& p_settings)
     hal::safe_throw(hal::operation_not_supported(this));
   }
 
-  [[maybe_unused]] uint16_t baud_control = 15 - std::countl_zero(prescaler);
+  uint16_t baud_control = 15 - std::countl_zero(prescaler);
   if (std::has_single_bit(prescaler)) {
     baud_control--;
   }

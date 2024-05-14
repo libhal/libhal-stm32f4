@@ -15,9 +15,11 @@
 #pragma once
 
 #include <cstdint>
+
 #include <span>
 
 #include <libhal/spi.hpp>
+#include <libhal/initializers.hpp>
 
 #include "constants.hpp"
 #include "pin.hpp"
@@ -26,6 +28,22 @@ namespace hal::stm32f4 {
 class spi : public hal::spi
 {
 public:
+
+  /**
+   * @brief Construct a new spi object
+   *
+   * @param p_bus SPI bus number 1-5
+   * @param p_settings
+   */
+  spi(hal::runtime, std::uint8_t p_bus, const spi::settings& p_settings = {});
+
+  spi(spi& p_other) = delete;
+  spi& operator=(spi& p_other) = delete;
+  spi(spi&& p_other) noexcept = delete;
+  spi& operator=(spi&& p_other) noexcept = delete;
+  ~spi();
+
+private:
   /// Information used to configure the spi bus
   struct bus_info
   {
@@ -38,28 +56,6 @@ public:
     /// spi clock pin
     pin data_in;
   };
-
-  /**
-   * @brief Construct a new spi object
-   *
-   * @param p_bus
-   * @param p_settings
-   */
-  spi(std::uint8_t p_bus, const spi::settings& p_settings = {});
-  /**
-   * @brief Construct a new spi object
-   *
-   * @param p_bus
-   */
-  spi(bus_info p_bus);
-
-  spi(spi& p_other) = delete;
-  spi& operator=(spi& p_other) = delete;
-  spi(spi&& p_other) noexcept = delete;
-  spi& operator=(spi&& p_other) noexcept = delete;
-  ~spi();
-
-private:
   void driver_configure(const settings& p_settings) override;
   void driver_transfer(std::span<const hal::byte> p_data_out,
                        std::span<hal::byte> p_data_in,
