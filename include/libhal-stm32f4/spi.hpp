@@ -18,8 +18,8 @@
 
 #include <span>
 
-#include <libhal/spi.hpp>
 #include <libhal/initializers.hpp>
+#include <libhal/spi.hpp>
 
 #include "constants.hpp"
 #include "pin.hpp"
@@ -28,7 +28,6 @@ namespace hal::stm32f4 {
 class spi : public hal::spi
 {
 public:
-
   /**
    * @brief Construct a new spi object
    *
