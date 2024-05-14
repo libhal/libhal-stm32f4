@@ -20,7 +20,7 @@ from conan import ConanFile
 class demos(ConanFile):
     settings = "compiler", "build_type", "os", "arch", "libc"
 
-    python_requires = "libhal-bootstrap/[^1.0.0]"
+    python_requires = "libhal-bootstrap/[^2.0.0]"
     python_requires_extend = "libhal-bootstrap.demo"
 
     def requirements(self):

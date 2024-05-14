@@ -24,6 +24,7 @@ libhal_test_and_make_library(
   src/pin.cpp
   src/power.cpp
   src/input_pin.cpp
+  src/spi.cpp
 
   TEST_SOURCES
   tests/output_pin.test.cpp

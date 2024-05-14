@@ -29,7 +29,7 @@ class libhal_stm32f4_conan(ConanFile):
     topics = ("arm", "microcontroller", "stm32f4")
     settings = "compiler", "build_type", "os", "arch"
 
-    python_requires = "libhal-bootstrap/[^1.0.0]"
+    python_requires = "libhal-bootstrap/[^2.0.0]"
     python_requires_extend = "libhal-bootstrap.library"
 
     options = {
@@ -48,7 +48,7 @@ class libhal_stm32f4_conan(ConanFile):
         return (self.options.platform == "stm32f411re")
 
     def requirements(self):
-        self.requires("libhal-armcortex/[^3.0.2]", transitive_headers=True)
+        self.requires("libhal-armcortex/[^4.0.0]", transitive_headers=True)
 
     def package_info(self):
         self.cpp_info.libs = ["libhal-stm32f4"]

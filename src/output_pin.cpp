@@ -25,7 +25,6 @@ output_pin::output_pin(hal::stm32f4::peripheral p_port,
   : m_port(p_port)
   , m_pin(p_pin)
 {
-  power(p_port).on();
   output_pin::driver_configure(p_settings);
 }
 
