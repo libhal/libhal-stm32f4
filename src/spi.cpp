@@ -61,7 +61,7 @@ inline bool rx_not_empty(spi_reg_t* p_reg)
 }
 }  // namespace
 
-spi::spi(std::uint8_t p_bus_number, const spi::settings& p_settings)
+spi::spi(hal::runtime, std::uint8_t p_bus_number, const spi::settings& p_settings)
 {
   // Datasheet: Chapter 4: Pin definition Table 9
   switch (p_bus_number) {
