@@ -61,7 +61,9 @@ inline bool rx_not_empty(spi_reg_t* p_reg)
 }
 }  // namespace
 
-spi::spi(hal::runtime, std::uint8_t p_bus_number, const spi::settings& p_settings)
+spi::spi(hal::runtime,
+         std::uint8_t p_bus_number,
+         spi::settings const& p_settings)
 {
   // Datasheet: Chapter 4: Pin definition Table 9
   switch (p_bus_number) {
@@ -168,7 +170,7 @@ spi::~spi()
   power(m_peripheral_id).off();
 }
 
-void spi::driver_configure(const settings& p_settings)
+void spi::driver_configure(settings const& p_settings)
 {
   auto* reg = reinterpret_cast<spi_reg_t*>(m_peripheral_register);
 
@@ -178,8 +180,8 @@ void spi::driver_configure(const settings& p_settings)
   // Setup operating frequency
   // TODO(#16): replace input clock with a get_frequency instruction
   using namespace hal::literals;
-  const auto input_clock = 16.0_MHz;
-  const auto clock_divider = input_clock / p_settings.clock_rate;
+  auto const input_clock = 16.0_MHz;
+  auto const clock_divider = input_clock / p_settings.clock_rate;
   auto prescaler = static_cast<std::uint16_t>(clock_divider);
   if (prescaler <= 1) {
     prescaler = 2;
@@ -212,7 +214,7 @@ void spi::driver_configure(const settings& p_settings)
     .clear<control_register1::internal_slave_select>();
 }
 
-void spi::driver_transfer(std::span<const hal::byte> p_data_out,
+void spi::driver_transfer(std::span<hal::byte const> p_data_out,
                           std::span<hal::byte> p_data_in,
                           hal::byte p_filler)
 {

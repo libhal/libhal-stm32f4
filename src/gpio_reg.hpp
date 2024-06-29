@@ -27,29 +27,29 @@ struct stm32f4_gpio_t
 {
   /// Offset: 0x000 pin mode (00 = Input, 01 = Output, 10 = Alternate Function
   /// mode, 11 Analog) (R/W)
-  volatile std::uint32_t pin_mode;
+  std::uint32_t volatile pin_mode;
   /// Offset: 0x004 output type(0 = output push-pull, 1 = output open-drain)
-  volatile std::uint32_t output_type;
+  std::uint32_t volatile output_type;
   /// Offset: 0x008 output speed(00 = Low speed, 01 = Medium speed, 10 = Fast
   /// speed, 11 = High speed)
-  volatile std::uint32_t output_speed;
+  std::uint32_t volatile output_speed;
   /// Offset: 0x00C port pull-up/pull-down (00 = no pull-up/pull-down, 01 =
   /// pull-up, 10 pull-down)
-  volatile std::uint32_t pull_up_pull_down;
+  std::uint32_t volatile pull_up_pull_down;
   /// Offset: 0x010 port input data (RO)
-  volatile std::uint32_t input_data;
+  std::uint32_t volatile input_data;
   /// Offset: 0x014 port output data
-  volatile std::uint32_t output_data;
+  std::uint32_t volatile output_data;
   /// Offset: 0x018low port set (0 = no action, 1 = reset)
-  volatile std::uint16_t set;
+  std::uint16_t volatile set;
   /// Offset: 0x018high port reset (0 = no action, 1 = reset)
-  volatile std::uint16_t reset;
+  std::uint16_t volatile reset;
   /// Offset: 0x01C config lock
-  volatile std::uint32_t lock;
+  std::uint32_t volatile lock;
   /// Offset: 0x020 alternate function low (bits 0 - 7)
-  volatile std::uint32_t alt_function_low;
+  std::uint32_t volatile alt_function_low;
   /// Offset: 0x024 alternate function high (bits 8 - 15)
-  volatile std::uint32_t alt_function_high;
+  std::uint32_t volatile alt_function_high;
 };
 
 inline constexpr intptr_t ahb_base = 0x4002'0000UL;

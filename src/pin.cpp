@@ -31,7 +31,7 @@ pin::pin(peripheral p_port, std::uint8_t p_pin) noexcept
   power(p_port).on();
 }
 
-const pin& pin::function(
+pin const& pin::function(
   hal::stm32f4::pin::pin_function p_function) const noexcept
 {
   auto port_reg = get_reg(m_port);
@@ -64,7 +64,7 @@ const pin& pin::function(
   return *this;
 }
 
-const pin& pin::resistor(hal::pin_resistor p_resistor) const noexcept
+pin const& pin::resistor(hal::pin_resistor p_resistor) const noexcept
 {
   // modify the pull_up_pull_down reg to the enumclass of p_registor
   auto port_reg = get_reg(m_port);
@@ -87,7 +87,7 @@ const pin& pin::resistor(hal::pin_resistor p_resistor) const noexcept
   return *this;
 }
 
-const pin& pin::open_drain(bool p_enable) const noexcept
+pin const& pin::open_drain(bool p_enable) const noexcept
 {
   // modify output_type to p_enable
   auto port_reg = get_reg(m_port);

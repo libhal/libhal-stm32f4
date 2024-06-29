@@ -23,7 +23,7 @@
 
 void delay_by_cycles(int p_cycles)
 {
-  volatile int i = 0;
+  int volatile i = 0;
   while (i < p_cycles) {
     i = i + 1;
   }

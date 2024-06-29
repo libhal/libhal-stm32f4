@@ -25,14 +25,14 @@
 namespace hal::stm32f4 {
 input_pin::input_pin(hal::stm32f4::peripheral p_port,
                      std::uint8_t p_pin,
-                     const settings& p_settings)
+                     settings const& p_settings)
   : m_port(p_port)
   , m_pin(p_pin)
 {
   input_pin::driver_configure(p_settings);
 }
 
-void input_pin::driver_configure(const settings& p_settings)
+void input_pin::driver_configure(settings const& p_settings)
 {
   bit_mask pin_mode_mask = { .position = 2 * static_cast<uint32_t>(m_pin),
                              .width = 2 };

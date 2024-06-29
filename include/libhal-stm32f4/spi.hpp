@@ -34,7 +34,7 @@ public:
    * @param p_bus SPI bus number 1-5
    * @param p_settings
    */
-  spi(hal::runtime, std::uint8_t p_bus, const spi::settings& p_settings = {});
+  spi(hal::runtime, std::uint8_t p_bus, spi::settings const& p_settings = {});
 
   spi(spi& p_other) = delete;
   spi& operator=(spi& p_other) = delete;
@@ -55,8 +55,8 @@ private:
     /// spi clock pin
     pin data_in;
   };
-  void driver_configure(const settings& p_settings) override;
-  void driver_transfer(std::span<const hal::byte> p_data_out,
+  void driver_configure(settings const& p_settings) override;
+  void driver_transfer(std::span<hal::byte const> p_data_out,
                        std::span<hal::byte> p_data_in,
                        hal::byte p_filler) override;
 

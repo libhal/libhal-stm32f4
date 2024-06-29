@@ -55,7 +55,7 @@ public:
   void off();
 
 private:
-  volatile std::uint32_t* m_enable_register = nullptr;
+  std::uint32_t volatile* m_enable_register = nullptr;
   std::uint8_t m_bit_position = 0;
 };
 }  // namespace hal::stm32f4
