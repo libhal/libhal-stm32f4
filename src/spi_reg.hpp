@@ -22,23 +22,23 @@ namespace hal::stm32f4 {
 struct spi_reg_t
 {
   /*!< Offset: 0x000 Control Register 1 (R/W) */
-  volatile uint32_t cr1;
+  uint32_t volatile cr1;
   /*!< Offset: 0x004 Control Register 2 (R/W) */
-  volatile uint32_t cr2;
+  uint32_t volatile cr2;
   /*!< Offset: 0x008 Status Register (R/W) */
-  volatile uint32_t sr;
+  uint32_t volatile sr;
   /*!< Offset: 0x00C Data Register (R/W) */
-  volatile uint32_t dr;
+  uint32_t volatile dr;
   /*!< Offset: 0x010 CRC polynomial register (R/ ) */
-  const volatile uint32_t crcpr;
+  uint32_t const volatile crcpr;
   /*!< Offset: 0x014 RX CRC register (R/W) */
-  volatile uint32_t rxcrcr;
+  uint32_t volatile rxcrcr;
   /*!< Offset: 0x018 TX CRC Register (R/W) */
-  volatile uint32_t txcrcr;
+  uint32_t volatile txcrcr;
   /*!< Offset: 0x01C configuration register (R/W) */
-  volatile uint32_t i2scfgr;
+  uint32_t volatile i2scfgr;
   /*!< Offset: 0x020 prescaler register (R/W) */
-  volatile uint32_t i2spr;
+  uint32_t volatile i2spr;
 };
 
 /// SPI Control Register 1

@@ -22,7 +22,7 @@
 
 namespace hal::stm32f4 {
 namespace {
-volatile uint32_t* enable(uint32_t p_bus_index)
+uint32_t volatile* enable(uint32_t p_bus_index)
 {
   switch (p_bus_index) {
     case 0:
